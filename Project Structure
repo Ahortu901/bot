@@ -1,0 +1,14 @@
+#! bin/usr/bash
+
+forex_trading_bot/
+│
+├── main.py                 # Main file to run the bot
+├── model.py                # Core AI model and trading strategy
+├── config.py               # Configuration file for settings
+├── requirements.txt        # Python dependencies
+├── README.md               # Project documentation
+├── utils/                  # Helper functions for technical indicators and risk management
+│   ├── indicators.py
+│   └── risk_management.py
+└── data/                   # Historical data or data fetching scripts
+    └── fetch_data.py
