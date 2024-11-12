@@ -51,7 +51,7 @@ The DataCollector class fetches real-time mining-related data such as hash rates
 - The HardwareOptimization class uses optimization algorithms (e.g., scipy.optimize) to determine the optimal hardware configuration for mining operations.
 
 ## Usage
-** Training the Mining Profitability Model: Before running the bot, you need to train the mining profitability model. You can do so by running the following code:
+ Training the Mining Profitability Model: Before running the bot, you need to train the mining profitability model. You can do so by running the following code:
 ```bash
 python mining_model.py
 ```
