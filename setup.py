@@ -4,7 +4,7 @@ setup(
     name="TradingBot",
     version="0.1.0",
     description="An AI-powered trading bot for crypto/stock market analysis and automated trading",
-    author="Your Name",
+    author="Ahortu Derrick",
     author_email="ahortuderrick0@gmail.com",
     packages=find_packages(),
     install_requires=[
@@ -40,14 +40,18 @@ setup(
 
         "forex-python>=1.5",
         "ta-lib>=0.4.0",
+
         "keras",
+
         "yfinance",
+
         "logging",
-        "joblib",
+
+         "joblib",
         
     ],
     classifiers=[
-        "Programming Language :: Python :: 3",
+       "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
