@@ -1,0 +1,10 @@
+ai_trading_bot/
+│
+├── bot.py
+├── model.py
+├── trader.py
+├── strategy.py
+├── risk_management.py
+├── utils.py
+├── config.py
+└── requirements.txt
