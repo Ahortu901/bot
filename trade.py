@@ -1,12 +1,33 @@
 # trade.py
 import logging
 import time
-from model import predict_signal
+from tensorflow.keras.models import load_model
+import joblib
+import numpy as np
 
 from calculate_sharpe_ratio import calculate_sharpe_ratio
 from data_collection import collect_data
 from config import TRADING_PAIR, INTERVAL, DATA_PERIOD, DATA_INTERVAL, API_KEY, SECRET_KEY
 
+
+# Load the trained model and scaler
+model = load_model('model/deep_learning_model.h5')
+scaler = joblib.load('model/scaler.pkl')
+
+# Simulate a new data point (e.g., the latest 60 timesteps)
+new_data = np.array([0.0] * 60)  # Replace with actual latest 60 closing prices
+
+# Rescale the data using the same scaler
+new_data_scaled = scaler.transform(new_data.reshape(-1, 1))
+
+# Reshape data for LSTM input
+new_data_scaled = new_data_scaled.reshape((1, 60, 1))
+
+# Make a prediction (next closing price)
+predicted_price = model.predict(new_data_scaled)
+predicted_price = scaler.inverse_transform(predicted_price)  # Inverse scale to original value
+
+print(f"Predicted Next Closing Price: {predicted_price}")
 # Simulated function to fetch account balance (replace with actual API if using a broker)
 def get_account_balance():
     """Fetch account balance (simulated). In real case, this would be an API call."""

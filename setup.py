@@ -43,7 +43,7 @@ setup(
         "keras",
         "yfinance",
         "logging",
-        "logging",
+        "joblib",
         
     ],
     classifiers=[
