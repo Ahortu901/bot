@@ -4,6 +4,7 @@ from forex_trading_strategy import load_data_with_indicators, generate_signals, 
 from apscheduler.schedulers.background import BackgroundScheduler
 import os
 import time
+from trade import trade_forex
 
 # Set up logging
 logging.basicConfig(
@@ -105,6 +106,7 @@ def schedule_task():
 
 def main():
     # Automatically schedule the task when the script is run
+    trade_forex()  # Replace with your actual trade function
     schedule_task()
 
 if __name__ == "__main__":
