@@ -1,21 +1,47 @@
-MIT License
+
 
 Copyright (c) 2024 Derrick Ahortu
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+                               Proprietary License
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+This software is provided under a proprietary license. The use, distribution, and modification
+of this software are subject to the terms and conditions set forth in this License Agreement.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+1. License Grant
+   The author grants the licensee a limited, non-transferable, and non-exclusive license to use
+   this software for internal business purposes only. The software may not be redistributed,
+   sold, or sublicensed to third parties without prior written consent from the author.
+
+2. Restrictions
+   a. You may not modify, decompile, disassemble, or reverse engineer the software.
+   b. You may not distribute or sublicense the software to any third party.
+   c. You may not use the software in any manner that violates applicable laws or regulations.
+
+3. Ownership
+   The software is owned by the author and is protected by copyright law. The licensee does not
+   have ownership of the software and only has a right to use the software under the terms of this
+   license.
+
+4. Warranty Disclaimer
+   The software is provided "as is" without any warranty of any kind, either express or implied,
+   including but not limited to the implied warranties of merchantability and fitness for a particular
+   purpose. The author makes no guarantees that the software will be error-free or uninterrupted.
+
+5. Limitation of Liability
+   In no event will the author be liable for any damages, including but not limited to lost profits,
+   lost data, or any other direct or indirect, incidental, or consequential damages, arising out of
+   the use or inability to use the software.
+
+6. Termination
+   This license is effective until terminated. The author may terminate this license at any time
+   if the licensee breaches any of the terms of this Agreement. Upon termination, the licensee must
+   cease all use of the software and destroy any copies in their possession.
+
+7. Governing Law
+   This license shall be governed by and construed in accordance with the laws of the jurisdiction
+   in which the author resides. Any legal actions or proceedings related to this license shall be
+   brought in the courts located in the author's jurisdiction.
+
+By using this software, you agree to the terms of this proprietary license.
+
+Author: [Ahortu Derrick], [Selorm Butsor], [Perry]
