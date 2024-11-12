@@ -1,0 +1,11 @@
+pandas
+numpy
+tensorflow
+keras
+yfinance
+talib
+matplotlib
+scikit-learn
+logging
+requests
+argparse

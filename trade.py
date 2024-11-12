@@ -1,85 +1,88 @@
+# trade.py
 import logging
-import pandas as pd
-import numpy as np
-import talib as ta
-from keras.models import load_model
-from data_collection import collect_data  # Assuming you have this module for data collection
+import time
+from model import predict_signal
 
-# Function to add technical indicators to the data
-def add_technical_indicators(df):
-    """Add technical indicators to the DataFrame."""
-    df['SMA_50'] = ta.SMA(df['Close'], timeperiod=50)
-    df['EMA_20'] = ta.EMA(df['Close'], timeperiod=20)
-    df['RSI'] = ta.RSI(df['Close'], timeperiod=14)
-    df['MACD'], df['MACD_Signal'], df['MACD_Hist'] = ta.MACD(df['Close'], fastperiod=12, slowperiod=26, signalperiod=9)
-    df['ATR'] = ta.ATR(df['High'], df['Low'], df['Close'], timeperiod=14)
-    return df
+from calculate_sharpe_ratio import calculate_sharpe_ratio
+from data_collection import collect_data
+from config import TRADING_PAIR, INTERVAL, DATA_PERIOD, DATA_INTERVAL, API_KEY, SECRET_KEY
 
-# Load the trained model
-model = load_model('model.h5')  # Ensure your model is saved in 'model.h5'
+# Simulated function to fetch account balance (replace with actual API if using a broker)
+def get_account_balance():
+    """Fetch account balance (simulated). In real case, this would be an API call."""
+    return 10000  # Example: $10,000 account balance
 
-# Function to preprocess the data for model prediction
-def preprocess_data(df):
-    """Preprocess data to prepare it for model prediction."""
-    df = add_technical_indicators(df)  # Add technical indicators
-    features = ['SMA_50', 'EMA_20', 'RSI', 'MACD', 'ATR']  # Use these features in the model
+# Function to calculate position size based on account balance and risk
+def calculate_position_size(account_balance, stop_loss_distance, risk_percentage=0.01):
+    """Calculate the position size based on account balance, stop-loss, and risk percentage."""
+    risk_per_trade = account_balance * risk_percentage
+    position_size = risk_per_trade / stop_loss_distance
+    return position_size
 
-    # Drop NaN values (resulting from technical indicator calculations)
-    df = df.dropna()
+# Function to calculate stop-loss and take-profit levels
+def calculate_exit_levels(entry_price, stop_loss_percentage=0.02, take_profit_percentage=0.04):
+    """Calculate the stop-loss and take-profit levels."""
+    stop_loss_level = entry_price * (1 - stop_loss_percentage)
+    take_profit_level = entry_price * (1 + take_profit_percentage)
+    return stop_loss_level, take_profit_level
 
-    # Scale/normalize features if needed (not shown here, but may be required depending on your model)
-    X = df[features].values  # Convert to array for model input
-    return X
-
-# Function to generate trade signal (buy or sell)
-def generate_signal(df):
-    """Generate buy or sell signal based on model prediction."""
-    # Preprocess the data and get the features for prediction
-    X = preprocess_data(df)
-    
-    # Predict the next action using the model (e.g., 1 for buy, 0 for hold, -1 for sell)
-    prediction = model.predict(X[-1:].reshape(1, -1))  # Use the most recent row for prediction
-    predicted_signal = np.argmax(prediction)  # Get the predicted signal (0, 1, or -1)
-
-    if predicted_signal == 1:
-        return "Buy"
-    elif predicted_signal == 0:
-        return "Hold"
-    elif predicted_signal == -1:
-        return "Sell"
-    else:
-        return "Hold"
-
-# Function to execute the buy/sell logic (mocking trade execution)
-def execute_trade(signal):
-    """Execute buy/sell based on the signal."""
-    if signal == "Buy":
+# Simulated trade execution function
+def execute_trade(signal, account_balance, entry_price):
+    """Execute buy/sell action based on the model's prediction with risk management."""
+    if signal == 1:
         logging.info("Executing Buy Order!")
-        # Here you would call the broker's API to place a buy order.
-        # Example: broker_api.place_order("buy", quantity=1)
-        pass
-    elif signal == "Sell":
+
+        # Calculate stop-loss, take-profit, and position size
+        stop_loss_level, take_profit_level = calculate_exit_levels(entry_price)
+        stop_loss_distance = entry_price - stop_loss_level
+        position_size = calculate_position_size(account_balance, stop_loss_distance)
+
+        logging.info(f"Stop-Loss Level: {stop_loss_level}, Take-Profit Level: {take_profit_level}")
+        logging.info(f"Position Size: {position_size:.2f} units")
+
+        # Place order (simulation)
+        # broker_api.buy(TRADING_PAIR, position_size)
+
+    elif signal == -1:
         logging.info("Executing Sell Order!")
-        # Here you would call the broker's API to place a sell order.
-        # Example: broker_api.place_order("sell", quantity=1)
-        pass
+
+        # Calculate stop-loss, take-profit, and position size
+        stop_loss_level, take_profit_level = calculate_exit_levels(entry_price)
+        stop_loss_distance = entry_price - stop_loss_level
+        position_size = calculate_position_size(account_balance, stop_loss_distance)
+
+        logging.info(f"Stop-Loss Level: {stop_loss_level}, Take-Profit Level: {take_profit_level}")
+        logging.info(f"Position Size: {position_size:.2f} units")
+
+        # Place order (simulation)
+        # broker_api.sell(TRADING_PAIR, position_size)
+
     else:
-        logging.info("No trade executed. Hold position.")
+        logging.info("No action taken. Hold position.")
 
-# Function to monitor market and make trading decisions
+# Main function to run trading logic with risk management
 def trade_forex():
-    """Main function to continuously monitor the market and execute trades."""
-    logging.basicConfig(level=logging.INFO)
-    
-    # Collect the latest data (you can modify this to get real-time data)
-    df = collect_data()  # Replace with your actual data collection method
+    """Main trading logic with risk management features."""
+    logging.info("Starting the trading process...")
 
-    # Generate a trade signal (Buy, Sell, or Hold)
-    signal = generate_signal(df)
+    try:
+        # Collect the latest market data
+        df = collect_data(symbol=TRADING_PAIR, period=DATA_PERIOD, interval=DATA_INTERVAL)
+        
+        # Calculate Sharpe ratio for the strategy returns
+        sharpe_ratio = calculate_sharpe_ratio(df['Returns'])
 
-    # Execute trade based on the generated signal
-    execute_trade(signal)
+        # Predict the signal (1 for Buy, 0 for Hold, -1 for Sell)
+        signal = predict_signal(df)
 
-if __name__ == "__main__":
-    # Schedule the trading function to run periodically
-    trade_forex()  # Run the trade function
+        # Get account balance (simulated)
+        account_balance = get_account_balance()
+
+        # Get the latest market price (assumed to be the closing price)
+        entry_price = df['Close'].iloc[-1]
+
+        # Execute the trade with the calculated stop-loss, take-profit, and position size
+        execute_trade(signal, account_balance, entry_price)
+
+    except Exception as e:
+        logging.error(f"Error during trading: {e}")

@@ -1,68 +1,37 @@
+# model.py
+from keras.models import load_model
+import logging
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+import talib as ta
 
-# Load Forex data and technical indicators (assuming the technical indicators were calculated earlier)
-def load_data_with_indicators(file_name="historical_forex_data_with_indicators.csv"):
-    df = pd.read_csv(file_name)
-    df['date'] = pd.to_datetime(df['date'])
-    df.set_index('date', inplace=True)
+# Load the pre-trained model (ensure it's already trained and saved)
+model = load_model('model.h5')
+
+# Function to add technical indicators to the DataFrame
+def add_technical_indicators(df):
+    df['SMA_50'] = ta.SMA(df['Close'], timeperiod=50)
+    df['EMA_20'] = ta.EMA(df['Close'], timeperiod=20)
+    df['RSI'] = ta.RSI(df['Close'], timeperiod=14)
+    df['MACD'], df['MACD_Signal'], df['MACD_Hist'] = ta.MACD(df['Close'], fastperiod=12, slowperiod=26, signalperiod=9)
+    df['ATR'] = ta.ATR(df['High'], df['Low'], df['Close'], timeperiod=14)
     return df
 
-# Define strategy rules
-def generate_signals(df):
-    # Initialize signals column
-    df['Signal'] = 0  # 0 means no action (hold), 1 means buy, -1 means sell
+# Preprocessing the data for the model
+def preprocess_data(df):
+    df = add_technical_indicators(df)
+    features = ['SMA_50', 'EMA_20', 'RSI', 'MACD', 'ATR']
+    df = df.dropna()  # Drop NaN values resulting from technical indicator calculations
+    X = df[features].values
+    return X
 
-    for i in range(1, len(df)):
-        # Buy Condition (When model predicts price rise and technical indicators support buy)
-        if df['rate'][i] > df['rate'][i-1] and df['RSI_14'][i] < 30 and df['MACD'][i] > df['MACD_signal'][i] and df['rate'][i] > df['SMA_14'][i]:
-            df['Signal'][i] = 1  # Buy signal
-
-        # Sell Condition (When model predicts price fall and technical indicators support sell)
-        elif df['rate'][i] < df['rate'][i-1] and df['RSI_14'][i] > 70 and df['MACD'][i] < df['MACD_signal'][i] and df['rate'][i] < df['SMA_14'][i]:
-            df['Signal'][i] = -1  # Sell signal
-
-    return df
-
-# Backtest the strategy
-def backtest_strategy(df):
-    df['Returns'] = df['rate'].pct_change()  # Daily returns
-
-    # We want to calculate returns for the strategy based on the Signal
-    df['Strategy_returns'] = df['Returns'] * df['Signal'].shift(1)  # Strategy takes action the next day
-
-    # Calculate the cumulative returns for both the strategy and the market
-    df['Cumulative_returns'] = (1 + df['Returns']).cumprod() - 1
-    df['Cumulative_strategy_returns'] = (1 + df['Strategy_returns']).cumprod() - 1
-
-    return df
-
-# Plot the results
-def plot_results(df):
-    plt.figure(figsize=(10, 6))
-    plt.plot(df['Cumulative_returns'], label='Market Returns', color='blue')
-    plt.plot(df['Cumulative_strategy_returns'], label='Strategy Returns', color='red')
-    plt.title('Market vs Strategy Cumulative Returns')
-    plt.xlabel('Date')
-    plt.ylabel('Cumulative Returns')
-    plt.legend()
-    plt.show()
-
-# Execute the strategy
-if __name__ == "__main__":
-    # Load Forex data with technical indicators (replace with actual path to your data)
-    df = load_data_with_indicators("historical_forex_data_with_indicators.csv")
-
-    # Generate Buy/Sell/Hold signals based on the strategy rules
-    df = generate_signals(df)
-
-    # Backtest the strategy
-    df = backtest_strategy(df)
-
-    # Plot the results to compare market performance vs. strategy performance
-    plot_results(df)
-
-    # Display the final cumulative returns
-    print(f"Final Market Cumulative Returns: {df['Cumulative_returns'].iloc[-1]:.2f}")
-    print(f"Final Strategy Cumulative Returns: {df['Cumulative_strategy_returns'].iloc[-1]:.2f}")
+# Function to make predictions (Buy, Sell, Hold)
+def predict_signal(df):
+    try:
+        X = preprocess_data(df)
+        prediction = model.predict(X[-1:].reshape(1, -1))  # Predict on the most recent data point
+        predicted_signal = np.argmax(prediction)  # Buy (1), Hold (0), Sell (-1)
+        return predicted_signal
+    except Exception as e:
+        logging.error(f"Error predicting signal: {e}")
+        raise

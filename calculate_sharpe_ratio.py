@@ -1,5 +1,6 @@
 import logging
-
+import numpy as np
+import pandas as pd
 
 def sharpe_ratio(returns, risk_free_rate=0.02):
     """

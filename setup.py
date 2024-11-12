@@ -40,7 +40,11 @@ setup(
 
         "forex-python>=1.5",
         "ta-lib>=0.4.0",
-
+        "keras",
+        "yfinance",
+        "logging",
+        "logging",
+        
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
