@@ -1,10 +1,7 @@
-ai_trading_bot/
+trading_bot/
 │
-├── bot.py
+├── main.py
 ├── model.py
-├── trader.py
-├── strategy.py
 ├── risk_management.py
-├── utils.py
-├── config.py
-└── requirements.txt
+├── api_utils.py
+└── data_utils.py
