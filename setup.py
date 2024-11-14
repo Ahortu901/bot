@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='ForexTradingBot',
+    name='AITradingBot',
     version='1.0.0',
     packages=find_packages(),
     install_requires=[
@@ -23,6 +23,11 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
+    entry_points={
+        'console_scripts': [
+        'start-bot=main:run_bot',
+        ],
+    },
 
 )
 print ("[+] Installation done")

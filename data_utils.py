@@ -1,21 +1,23 @@
 import pandas as pd
+import numpy as np
 from sklearn.preprocessing import MinMaxScaler
+from config import WINDOW_SIZE
 
-# Load forex data and preprocess
-def load_forex_data(filepath, feature='Close'):
-    data = pd.read_csv(filepath, date_parser=True)
-    data = data[['Date', feature]]
-    data['Date'] = pd.to_datetime(data['Date'])
-    data.set_index('Date', inplace=True)
-    return data
+def preprocess_data(data):
+    df = pd.DataFrame(data)
+    df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s')
+    df.set_index('timestamp', inplace=True)
+    
+    # Normalize data
+    scaler = MinMaxScaler()
+    df[['close']] = scaler.fit_transform(df[['close']])
 
-# Preprocess data for prediction (use last `lookback` data points)
-def preprocess_data_for_prediction(data, lookback=60):
-    scaler = MinMaxScaler(feature_range=(0, 1))
-    scaled_data = scaler.fit_transform(data)
+    # Create windowed data for prediction
+    X, y = [], []
+    for i in range(len(df) - WINDOW_SIZE):
+        X.append(df['close'].iloc[i:i + WINDOW_SIZE].values)
+        y.append(df['close'].iloc[i + WINDOW_SIZE])
 
-    x = []
-    x.append(scaled_data[-lookback:, 0])  # Use the last `lookback` data points
-    x = np.array(x)
-    x = np.reshape(x, (x.shape[0], x.shape[1], 1))  # Reshape for LSTM input
-    return x, scaler
+    X = np.array(X)
+    y = np.array(y)
+    return X, y, scaler

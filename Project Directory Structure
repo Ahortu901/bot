@@ -1,7 +1,8 @@
-trading_bot/
-│
 ├── main.py
+├── trained_model.py
 ├── model.py
 ├── risk_management.py
 ├── api_utils.py
+├── config.py
+├── setup.py
 └── data_utils.py

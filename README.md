@@ -80,7 +80,7 @@ To run a backtest using historical Forex data, use the `backtest.py` script. Mak
 
 ### Live Trading (Simulation)
 
-To run the bot for live trading, integrate your real-time data API (such as **Crypto.com** or other Forex API) into the model. Update the data-fetching logic in the `bot.py` file and set up live trade execution through an API like **CCXT** or **Binance API**.
+To run the bot for live trading, integrate your real-time data API (such as **Crypto.com** or other Forex API) into the model. Update the data-fetching logic in the `main.py` file and set up live trade execution through an API like **CCXT** or **Binance API**.
 
 ```python
 # Example usage:
