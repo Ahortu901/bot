@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: AITradingBot
+Version: 0.1
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Requires-Dist: tensorflow==2.14.0
+Requires-Dist: numpy==1.24.2
+Requires-Dist: pandas==2.1.0
+Requires-Dist: matplotlib==3.7.1
+Requires-Dist: requests==2.31.0
+Requires-Dist: scikit-learn==1.3.0
+Requires-Dist: ta-lib==0.4.0

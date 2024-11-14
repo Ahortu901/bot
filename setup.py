@@ -1,33 +1,29 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='AITradingBot',
-    version='1.0.0',
+    name="AITradingBot",
+    version="0.1",
     packages=find_packages(),
     install_requires=[
-        'numpy==1.24.0',
-        'pandas==1.5.3',
-        'matplotlib==3.7.0',
-        'scikit-learn==1.2.0',
-        'tensorflow==2.13.0',
-        'keras==2.13.0',
-        'requests==2.28.1',
-        'aiohttp==3.8.1',
-        'joblib',
-        'ta-lib'
+        'tensorflow==2.14.0',
+        'numpy==1.24.2',
+        'pandas==2.1.0',
+        'matplotlib==3.7.1',
+        'requests==2.31.0',
+        'scikit-learn==1.3.0',
+        'ta-lib==0.4.0',
     ],
-    author='Ahortu Derrick',
-    description='A deep learning-based Forex trading bot with backtesting and risk management.',
+    entry_points={
+        'console_scripts': [
+            'start-bot=main:run_bot',
+        ],
+    },
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
-    entry_points={
-        'console_scripts': [
-        'start-bot=main:run_bot',
-        ],
-    },
-
+    python_requires='>=3.6',
 )
-print ("[+] Installation done")
+
+

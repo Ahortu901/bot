@@ -1,0 +1,8 @@
+README.md
+setup.py
+AITradingBot.egg-info/PKG-INFO
+AITradingBot.egg-info/SOURCES.txt
+AITradingBot.egg-info/dependency_links.txt
+AITradingBot.egg-info/entry_points.txt
+AITradingBot.egg-info/requires.txt
+AITradingBot.egg-info/top_level.txt
