@@ -1,6 +1,6 @@
 # API keys and settings
-API_KEY = 'your_api_key'
-API_SECRET = 'your_api_secret'
+API_KEY = 'xKEj9UeUerUTncjpR6cZ7R'
+API_SECRET = 'cxakp_h2A3FuM39bihJ5ezgroWvB'
 SYMBOL = 'BTC/USDT'
 TIMEFRAME = '1h'
 LIMIT = 200

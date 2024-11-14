@@ -10,7 +10,7 @@ def install_requirements():
         "scikit-learn",
         "tensorflow",
         "matplotlib",
-        "talib",
+        "ta-lib",
         "requests",
         "logging"
     ]

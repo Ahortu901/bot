@@ -105,3 +105,21 @@ Thank you for considering contributing!
 
 Feel free to adjust the guidelines based on your specific preferences for contributing!
 ```
+
+fixing Ta-lib error
+```
+cd ta-lib
+```
+```
+./configure --prefix=/usr 
+```
+```
+make
+```
+or
+```
+sudo make install
+```
+```
+pip install ta-lib
+```

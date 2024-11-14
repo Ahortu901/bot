@@ -1,0 +1,51 @@
+# Ignore Python cache and temporary files
+__pycache__/
+*.py[cod]
+*.ipynb_checkpoints
+
+# Ignore log files
+*.log
+forex_trading_bot.log
+
+# Ignore environment configuration files
+.env
+config.py
+
+# Ignore virtual environments
+venv/
+env/
+.venv/
+
+# Ignore model files (if using saved models or checkpoints)
+model.h5
+*.h5
+*.ckpt
+
+# Ignore any data files used for training or testing
+data/
+*.csv
+*.xlsx
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Ignore compiled files and outputs
+*.so
+*.out
+*.a
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore any temporary files created by editors
+*.swp
+*.swo
+*~
+
+# Ignore __pycache__ folders recursively
+**/__pycache__/
+
+# Ignore other files and folders
+*.pkl
+*.joblib
