@@ -1,113 +1,172 @@
-# Forex Trading Bot
+# AI Trading Bot for Forex and Cryptocurrency
 
-A deep learning-based Forex trading bot that uses machine learning models to predict price trends, manage risks, and backtest strategies for real-time trading. The bot incorporates advanced risk management features, transaction costs, slippage simulation, and walk-forward testing for robust performance evaluation.
+This project implements an advanced AI trading bot for Forex and cryptocurrency markets using deep learning. The bot predicts future price movements based on historical market data, executes trades, and manages risk using machine learning models. It integrates with the Crypto.com API for live trading and allows for backtesting and paper trading.
 
 ## Features
 
-- **Deep Learning Model**: Predicts future price movements based on historical data.
-- **Risk Management**: Ensures trades adhere to predefined risk parameters.
-- **Backtesting**: Evaluate the bot's performance on historical data with realistic transaction costs and slippage.
-- **Walk-Forward Testing**: Robust validation technique to avoid overfitting by retraining on different segments of data.
-- **Multi-threaded Execution**: Designed for high-performance, real-time trading environments.
+- **Deep Learning Model**: Predicts future price movements based on historical data using an LSTM neural network.
+- **Risk Management**: Calculates position size based on portfolio balance and stop-loss limits.
+- **Live Trading**: Trades live on the market using the Crypto.com API.
+- **Backtesting**: Simulates trading using historical data to evaluate performance.
+- **Paper Trading**: Executes trades in real-time but without risking real capital.
 
 ## Requirements
 
-- Python 3.7+
-- The following dependencies can be installed using `pip` from the provided `requirements.txt` file:
+### Python 3.6+ and Dependencies
 
-    ```txt
-    numpy==1.24.0
-    pandas==1.5.3
-    matplotlib==3.7.0
-    scikit-learn==1.2.0
-    tensorflow==2.13.0
-    keras==2.13.0
-    requests==2.28.1
-    aiohttp==3.8.1
-    ```
+This project requires Python 3.6 or higher. To install the required dependencies, you can either use `requirements.txt` or `setup.py`.
 
-## Installation
+### Required Libraries
 
-### Option 1: Using `requirements.txt`
+- TensorFlow (for deep learning)
+- NumPy, Pandas (for data manipulation)
+- Matplotlib (for plotting)
+- Requests (for interacting with Crypto.com API)
+- scikit-learn (for data preprocessing and validation)
+- TA-Lib (for technical analysis)
 
-1. Clone the repository or download the project files to your local machine.
-2. Navigate to the project directory and create a virtual environment (optional but recommended):
+### Installation
 
-    ```bash
-    python3 -m venv venv
-    ```
+#### Option 1: Using `setup.py`
 
-3. Activate the virtual environment:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/AITradingBot.git
+   cd AITradingBot
 
-    - On Windows:
-      ```bash
-      venv\Scripts\activate
-      ```
-    - On macOS/Linux:
-      ```bash
-      source venv/bin/activate
-      ```
-
-4. Install the dependencies:
-
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-### Option 2: Using `setup.py`
-
-1. Clone the repository or download the project files to your local machine.
-2. Navigate to the project directory and install the dependencies using `setup.py`:
-
-    ```bash
-    python setup.py install
-    ```
-
-## Usage
-
-### Backtesting
-
-To run a backtest using historical Forex data, use the `backtest.py` script. Make sure to replace the `ExampleModel` class with your trained model.
-
-1. Ensure you have historical Forex data in CSV format with at least the columns `Date` and `Close`. The `Date` column should be in a recognizable date format, and `Close` should represent the closing price of the Forex pair.
-2. Run the backtest:
-
-    ```bash
-    python backtest.py
-    ```
-
-   This will print the backtest results and plot the balance over time.
-
-### Live Trading (Simulation)
-
-To run the bot for live trading, integrate your real-time data API (such as **Crypto.com** or other Forex API) into the model. Update the data-fetching logic in the `main.py` file and set up live trade execution through an API like **CCXT** or **Binance API**.
-
-```python
-# Example usage:
-model = YourModel()  # Replace with your model
-data = fetch_live_data()  # Your method for fetching live data
-predicted_price = model.predict_next_price(data)
+## Install the dependencies:
+```bash
+python setup.py install
+```
+### Clone the repository:
+```bash
+git clone https://github.com/yourusername/AITradingBot.git
+cd AITradingBot
 ```
 
-### Risk Management
-The bot uses a risk management system to calculate position sizes and stop losses based on account equity. Make sure to configure the parameters in the risk_management.py file before using it.
+### Create a Virtual Environment (Optional but Recommended)
+It's recommended to use a virtual environment to avoid dependency conflicts.
 
-### Walk-Forward Testing
-The walk-forward testing method in backtest.py splits the dataset into training and testing sets. It retrains the model on different segments of the data and evaluates its performance. This helps in evaluating model performance over time and avoiding overfitting.
+- Create a virtual environment:
+```bash
+python3 -m venv venv
+```
+
+### Activate the virtual environment:
+
+- For Linux/Mac:
+```bash
+source venv/bin/activate
+```
+### For Windows:
+```bash
+venv\Scripts\activate
+```
+Install dependencies as described above.
+
+### Configuration
+Before running the bot, configure the necessary settings:
+
+** config.py
+- API Keys: You will need to obtain API keys from Crypto.com to interact with their API.
+```python
+API_KEY = 'your_crypto_com_api_key'
+API_SECRET = 'your_crypto_com_api_secret'
+```
+- Risk Management Settings: Set the maximum percentage of your portfolio to risk per trade, as well as the maximum position size.
+
+```python
+MAX_RISK_PERCENTAGE = 0.02  # Max risk per trade (2%)
+MAX_POSITION_SIZE = 0.1     # Max position size (10% of portfolio)
+```
+
+- Model Configuration: Adjust model training settings like window size, batch size, and epochs.
+```python
+WINDOW_SIZE = 60   # Look-back window for predicting
+BATCH_SIZE = 32    # Batch size for training
+EPOCHS = 50        # Number of epochs for training
+```
+
+- Historical Data Configuration: Choose data source and timeframe for trading.
+```python
+DATA_SOURCE = "crypto_com"  # Data source for market data
+TIMEFRAME = "1h"           # Timeframe for trading (1-hour candlesticks)
+```
+
+### Running the Bot
+Live Trading (Paper Trading Mode)
+To simulate real-time trading (without risking actual capital), you can use the Paper Trading mode. This mode fetches real-time data and simulates trades in the market.
+
+- Run the bot:
+```bash
+python main.py
+```
+Choose ``live``for paper trading when prompted.
+
+- Backtesting
+To test your AI trading strategy on historical data and evaluate performance, you can run a backtest.
+
+** Run the bot:
+```bash
+python main.py
+```
+
+Choose backtest for backtesting when prompted.
+
+The backtest will simulate trades based on historical market data and show the final portfolio balance and performance.
+
+Training the Model
+The bot uses an LSTM (Long Short-Term Memory) model to predict future price movements based on historical data.
+
+ 1. The model will automatically train if no pre-trained model exists.
+ 2. You can also train the model manually by calling the train_model function in the trained_model.py file.
+
+### Model Training Workflow
+
+ 1. Fetch historical market data.
+ 2. Preprocess the data (normalize and create windows of data for training).
+ 3. Train the model on the preprocessed data using LSTM.
+ 4. Save the trained model to a file for future use.
+
+
+### Predicting Future Prices
+Once the model is trained, it will be used to predict future prices based on the latest market data. The model uses the last WINDOW_SIZE hours (or other configured time frames) to make predictions.
+
+ ### older Structure
+
+```graphql
+├── AITradingBot/
+│   ├── main.py               # Main script to run the bot
+│   ├── trained_model.py      # Contains model training logic
+│   ├── model.py              # Model architecture (LSTM)
+│   ├── risk_management.py    # Risk management logic (position sizing)
+│   ├── api_utils.py          # API integration with Crypto.com
+│   ├── config.py             # Configuration file
+│   ├── setup.py              # Package setup script
+│   ├── data_utils.py         # Data preprocessing functions
+│   └── backtest.py           # Backtesting logic
+├── requirements.txt          # List of required Python packages
+└── README.md                 # Project documentation
+```
+
+### Backtesting Results
+
+After running backtests, the bot will generate a DataFrame with trade actions and portfolio balances over time. You can analyze the backtest results to evaluate the performance of the trading strategy.
+
+### Example Output of Backtest:
+
+```yaml
+Backtest completed.
+   timestamp        action   price   quantity   portfolio_balance
+0  2024-11-14 12:00:00   BUY       10000    0.10         9990
+1  2024-11-14 13:00:00   SELL      10200    0.10         10195
+2  2024-11-14 14:00:00   BUY       10150    0.10         10150
+...
+```
 
 ### Contributing
-We welcome contributions! To contribute to the project:
 
-- Fork the repository.
-- Create a new branch for your feature or bug fix.
-- Make your changes and commit them.
-- Push the changes to your forked repository.
-- Open a pull request with a clear description of your changes.
+Feel free to fork the repository and submit pull requests for improvements, bug fixes, or new features. Please ensure that your contributions follow the coding standards and include relevant tests.
 
 ### License
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-### Acknowledgments
-- Thanks to the TensorFlow and Keras libraries for deep learning.
-- Thanks to Pandas and NumPy for data processing and numerical computations.
-- Special thanks to open-source contributors for making these libraries available.
